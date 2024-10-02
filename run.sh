@@ -1,5 +1,6 @@
 #!/bin/bash
 
+cd /home/pi/Development/eero-tools/
 # First generate the source JSONs from the network
 ./start.py eeros >eeros.json
 ./start.py devices >devices.json
