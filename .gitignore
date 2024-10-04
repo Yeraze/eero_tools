@@ -1,0 +1,4 @@
+*.pyc
+*.conf
+aliases.txt
+*.json
