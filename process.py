@@ -20,6 +20,23 @@ print("%i eeros found" % len(eeros))
 for eero in eeros:
     hostname = tidyName(eero["location"])
     fout.write("%s\teero_%s\n" % (eero["ip_address"], hostname))
+    with open("%s.conf" % hostname, "w") as file:
+        for field in [
+            "ip_address",
+            "serial",
+            "model",
+            "model_number",
+            "os_version",
+            "model",
+            "model_number",
+            "os_version",
+            "mac_address",
+            "location",
+            "connected_wired_clients_count",
+            "connected_wireless_clients_count",
+            "state",
+        ]:
+            file.write("%s=%s\n" % (field, eero[field]))
 
 # Read the devices.json file and parse it into memory
 with open("devices.json", "r") as file:
@@ -41,7 +58,9 @@ for device in devices:
             hostname = tidyName(device["nickname"])
             aliasList = ""
             if device["nickname"].lower() in aliases:
-                aliasList = " ".join(tidyName(alias) for alias in aliases[device["nickname"].lower()])
+                aliasList = " ".join(
+                    tidyName(alias) for alias in aliases[device["nickname"].lower()]
+                )
             fout.write("%s\t%s %s\n" % (device["ip"], hostname, aliasList))
 
 print("%i valid hostname" % count)

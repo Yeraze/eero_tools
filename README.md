@@ -20,3 +20,6 @@ synology nas,plex,openvas,adguard
 eero Nickname, and will be postprocessed into the hostname same as the
 regular name.)
 
+
+In addition, it will output a separate file per Eero device that contains some basic information about the device, including the hostname, IP address, and MAC address.  This is useful for debugging or for other purposes, and can be used with the included
+`eero_template.yaml` as a Zabbix Template for monitoring your Eero devices.

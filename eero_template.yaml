@@ -1,0 +1,172 @@
+zabbix_export:
+  version: '7.0'
+  template_groups:
+    - uuid: 36bff6c29af64692839d077febfc7079
+      name: 'Templates/Network devices'
+  templates:
+    - uuid: f5ea203d16c54e1cb65b90a95074493a
+      template: eero
+      name: eero
+      groups:
+        - name: 'Templates/Network devices'
+      items:
+        - uuid: 8d8c94ec7dea4eb69699b6738296b9aa
+          name: clients_wired
+          type: DEPENDENT
+          key: clients_wired
+          delay: '0'
+          preprocessing:
+            - type: REGEX
+              parameters:
+                - 'connected_wired_clients_count=(.*)'
+                - \1
+          master_item:
+            key: 'eeroparamsall.sh[{HOST.HOST}]'
+        - uuid: 84105ffe6e6c4e46ac6e1843a5a08661
+          name: clients_wireless
+          type: DEPENDENT
+          key: clients_wireless
+          delay: '0'
+          preprocessing:
+            - type: REGEX
+              parameters:
+                - 'connected_wireless_clients_count=(.*)'
+                - \1
+          master_item:
+            key: 'eeroparamsall.sh[{HOST.HOST}]'
+        - uuid: d3a4ad6e12934cab81fcf8bce10d2ee1
+          name: AllStats
+          type: EXTERNAL
+          key: 'eeroparamsall.sh[{HOST.HOST}]'
+          delay: 1h
+          history: '0'
+          value_type: TEXT
+          trends: '0'
+        - uuid: a9172fadcc9b4d3d97aab4bf4bf6b2d1
+          name: location
+          type: DEPENDENT
+          key: location
+          delay: '0'
+          value_type: TEXT
+          trends: '0'
+          preprocessing:
+            - type: REGEX
+              parameters:
+                - 'location=(.*)'
+                - \1
+          master_item:
+            key: 'eeroparamsall.sh[{HOST.HOST}]'
+        - uuid: 140d7c6f2f5a420286175fde61bbeddd
+          name: mac_address
+          type: DEPENDENT
+          key: mac_address
+          delay: '0'
+          value_type: TEXT
+          trends: '0'
+          inventory_link: MACADDRESS_A
+          preprocessing:
+            - type: REGEX
+              parameters:
+                - 'mac_address=(.*)'
+                - \1
+          master_item:
+            key: 'eeroparamsall.sh[{HOST.HOST}]'
+        - uuid: 46e49968d1614e85b23ae0c0d44bcf26
+          name: model
+          type: DEPENDENT
+          key: model
+          delay: '0'
+          value_type: TEXT
+          trends: '0'
+          inventory_link: MODEL
+          preprocessing:
+            - type: REGEX
+              parameters:
+                - 'model=(.*)'
+                - \1
+          master_item:
+            key: 'eeroparamsall.sh[{HOST.HOST}]'
+        - uuid: 5f58891488e64b80b134f5fce5cdb067
+          name: model_number
+          type: DEPENDENT
+          key: model_number
+          delay: '0'
+          value_type: TEXT
+          trends: '0'
+          inventory_link: SERIALNO_B
+          preprocessing:
+            - type: REGEX
+              parameters:
+                - 'model_number=(.*)'
+                - \1
+          master_item:
+            key: 'eeroparamsall.sh[{HOST.HOST}]'
+        - uuid: 0b32d9b4826849218118f52207e298ef
+          name: ip
+          type: DEPENDENT
+          key: net.ip
+          delay: '0'
+          value_type: TEXT
+          trends: '0'
+          preprocessing:
+            - type: REGEX
+              parameters:
+                - 'ip_address=(.*)'
+                - \1
+          master_item:
+            key: 'eeroparamsall.sh[{HOST.HOST}]'
+        - uuid: ea5d73c5564a4940b0f9f5dc76032f32
+          name: os_version
+          type: DEPENDENT
+          key: os_version
+          delay: '0'
+          value_type: TEXT
+          trends: '0'
+          inventory_link: OS
+          preprocessing:
+            - type: REGEX
+              parameters:
+                - 'os_version=(.*)'
+                - \1
+          master_item:
+            key: 'eeroparamsall.sh[{HOST.HOST}]'
+          triggers:
+            - uuid: 47ca2a91be9d48cc849f96c0859c88a1
+              expression: change(/eero/os_version)=1
+              name: 'Change in OS Version'
+              priority: INFO
+              manual_close: 'YES'
+        - uuid: e56544a95cd147fab0fe3e2782bbd9a9
+          name: serial
+          type: DEPENDENT
+          key: serial
+          delay: '0'
+          value_type: TEXT
+          trends: '0'
+          inventory_link: SERIALNO_A
+          preprocessing:
+            - type: REGEX
+              parameters:
+                - 'serial=(.*)'
+                - \1
+          master_item:
+            key: 'eeroparamsall.sh[{HOST.HOST}]'
+        - uuid: c13bf3699d714958aa73d8faa5fc06fc
+          name: state
+          type: DEPENDENT
+          key: state
+          delay: '0'
+          value_type: TEXT
+          trends: '0'
+          preprocessing:
+            - type: REGEX
+              parameters:
+                - 'state=(.*)'
+                - \1
+          master_item:
+            key: 'eeroparamsall.sh[{HOST.HOST}]'
+          triggers:
+            - uuid: 112a01a22e8d4b26b5540896b94d2ad9
+              expression: 'last(/eero/state,#1)<>"ONLINE"'
+              name: 'Device Not Online'
+              priority: HIGH
