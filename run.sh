@@ -11,7 +11,7 @@ touch hosts.conf
 touch newhosts.conf
 ./process.py
 
-if [ -s newhosts.conf ]; then
+if [ ! -s newhosts.conf ]; then
   echo "The newhosts.conf file is empty. Exiting."
   exit 1
 fi
