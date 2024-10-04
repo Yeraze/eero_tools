@@ -2,3 +2,9 @@
 *.conf
 aliases.txt
 *.json
+session.cookie
+
+pyvenv.cfg
+
+bin/
+lib/
