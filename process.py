@@ -22,19 +22,20 @@ for eero in eeros:
     fout.write("%s\teero_%s\n" % (eero["ip_address"], hostname))
     with open("%s.conf" % hostname, "w") as file:
         for field in [
+            "location",
             "ip_address",
             "serial",
             "model",
             "model_number",
             "os_version",
-            "model",
-            "model_number",
-            "os_version",
+            "status",
+            "mesh_quality_bars",
             "mac_address",
-            "location",
             "connected_wired_clients_count",
             "connected_wireless_clients_count",
             "state",
+            "last_reboot",
+            "last_heartbeat"
         ]:
             file.write("%s=%s\n" % (field, eero[field]))
 

@@ -1,5 +1,6 @@
 #!/bin/bash
 
+date
 cd /home/pi/Development/eero-tools/
 source bin/activate
 # First generate the source JSONs from the network
