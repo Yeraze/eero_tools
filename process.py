@@ -11,12 +11,22 @@ def tidyName(host):
     return hostname
 
 
-fout = open("newhosts.conf", "w")
 
 # Read the eeros.json file and parse it into memory
 with open("eeros.json", "r") as file:
     eeros = json.load(file)
 print("%i eeros found" % len(eeros))
+# Read the devices.json file and parse it into memory
+with open("devices.json", "r") as file:
+    devices = json.load(file)
+print("%i connected devices found" % len(devices))
+
+if (len(eeros) == 0) or (len(devices) == 0):
+    print("-> ABORTING due to missing data.")
+    exit(1)
+
+
+fout = open("newhosts.conf", "w")
 for eero in eeros:
     hostname = tidyName(eero["location"])
     fout.write("%s\teero_%s\n" % (eero["ip_address"], hostname))
@@ -39,9 +49,6 @@ for eero in eeros:
         ]:
             file.write("%s=%s\n" % (field, eero[field]))
 
-# Read the devices.json file and parse it into memory
-with open("devices.json", "r") as file:
-    devices = json.load(file)
 
 # Read the aliases list
 aliases = dict()
@@ -50,7 +57,6 @@ with open("aliases.txt", "r") as file:
         hosts = line.split(",")
         aliases[hosts[0]] = hosts[1:]
 
-print("%i connected devices found" % len(devices))
 count = 0
 for device in devices:
     if ("nickname" in device) and (device["nickname"] is not None):
